@@ -1,15 +1,18 @@
 <?php
 
+require '../app/Entity/QCM.php';
+
 class QcmManager
 {
     private $pdo;
 
     public function __construct()
     {
-        try{
-        $this->pdo = new PDO('mysql:host=localhost;dbname=qcm','root');
+        try
+        {
+            $this->pdo = new PDO('mysql:host=localhost;dbname=qcm','root');
         }
-        catch(PDOExeption $e)
+        catch(PDOException $e)
         {
             echo 'Error : ' . $e->getMessage();
             die;
@@ -21,18 +24,21 @@ class QcmManager
         $sql = 'SELECT * FROM qcm';
         $req = $this->pdo->prepare($sql);
         $req->execute();
-        // return $req->fetchAll(PDO::FETCH_ASSOC);
-        $result = [];
         $qcms = $req->fetchAll(PDO::FETCH_ASSOC);
+        $result = [];
         foreach($qcms as $qcm)
         {
             $obj = new QCM();
-            $obj->setTheme($qcm['theme']);
+            $obj->setId($qcm['id']);
+            $obj->setTitle($qcm['title']);
             $result[] = $obj;
         }
 
         return $result;
-
     }
-}
 
+
+
+
+
+}
